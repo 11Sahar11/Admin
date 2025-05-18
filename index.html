@@ -62,13 +62,19 @@
     // פונקציה לשליחת טופס יצירת קשר
     function submitContactForm(e) {
       e.preventDefault();
-      // כאן תהיה הלוגיקה לשליחת הטופס
-      alert('תודה על פנייתך! נחזור אליך בהקדם.');
-      e.target.reset();
+      const form = e.target;
+      // כאן אפשר להוסיף שליחה לשרת אמיתי
+      const msg = document.createElement('div');
+      msg.innerText = 'ההודעה נשלחה בהצלחה! נחזור אליך בהקדם.';
+      msg.className = 'bg-green-100 border border-green-400 text-green-700 px-4 py-3 rounded mt-4 text-center';
+      form.parentNode.insertBefore(msg, form.nextSibling);
+      setTimeout(() => { msg.remove(); }, 5000);
+      form.reset();
     }
   </script>
   <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+  <link rel="icon" type="image/png" href="ai_logo.png">
   <style>
     /* אנימציות מותאמות אישית */
     @keyframes fadeIn {
@@ -291,7 +297,7 @@
   <nav class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
     <div class="flex justify-between items-center h-20 rtl:flex-row-reverse">
       <div class="logo-container rtl:flex-row-reverse rtl:space-x-reverse">
-        <img src="ai_logo.png" alt="לוגו מכללת AI" class="logo-img" />
+        <img src="ai_logo.png" alt="לוגו מכללת AI - רובוט עם כובע בוגר" class="logo-img" />
         <div class="text-right">
           <h1 class="logo-text">מכללת AI</h1>
           <p class="logo-subtitle">מצוינות בלימוד מקצועות הדאטה</p>
@@ -327,7 +333,7 @@
   <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative">
     <div class="text-center animate-fade-in">
       <div class="flex justify-center mb-8">
-        <img src="ai_logo.png" alt="לוגו מכללת AI" class="logo-img-large animate-float" />
+        <img src="ai_logo.png" alt="לוגו מכללת AI - רובוט עם כובע בוגר" class="logo-img-large animate-float" />
       </div>
       <h2 class="text-6xl md:text-7xl font-extrabold mb-6 leading-tight drop-shadow-lg">ללמוד מקצוע מבוקש<br>בקצב שלך</h2>
       <p class="text-2xl md:text-3xl mb-10 text-blue-100 font-medium">הצטרפו לקורסים מקצועיים בתחום הדאטה<br>עם שליחה אוטומטית לאחר רכישה</p>
@@ -361,48 +367,92 @@
 
 <section id="courses" class="section-padding bg-gradient-to-b from-white to-blue-50">
   <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-    <h2 class="section-title">הקורסים שלנו</h2>
-    <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+    <h2 class="section-title text-right">הקורסים שלנו</h2>
+    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 rtl:flex-row-reverse">
       <div class="course-card group">
         <div class="relative overflow-hidden">
           <img src="https://images.unsplash.com/photo-1544383835-bda2bc66a55d?ixlib=rb-1.2.1&auto=format&fit=crop&w=800&q=80" 
-               alt="SQL Course" 
+               alt="קורס SQL מאפס למתקדמים" 
                class="w-full h-48 object-cover transform group-hover:scale-110 transition-transform duration-500">
           <div class="absolute inset-0 bg-gradient-to-t from-blue-900 to-transparent opacity-0 group-hover:opacity-60 transition-opacity duration-300"></div>
         </div>
-        <div class="p-6">
+        <div class="p-6 text-right">
           <h3 class="text-2xl font-semibold text-blue-700 mb-3">SQL מאפס למתקדמים</h3>
           <ul class="text-gray-600 mb-6 space-y-3">
-            <li class="flex items-center">
-              <i class="fas fa-check-circle text-green-500 ml-2"></i>
-              <span>24 שיעורים מעשיים</span>
-            </li>
-            <li class="flex items-center">
-              <i class="fas fa-check-circle text-green-500 ml-2"></i>
-              <span>תרגול מעשי עם פרויקטים</span>
-            </li>
-            <li class="flex items-center">
-              <i class="fas fa-check-circle text-green-500 ml-2"></i>
-              <span>תמיכה אישית</span>
-            </li>
-            <li class="flex items-center">
-              <i class="fas fa-check-circle text-green-500 ml-2"></i>
-              <span>תעודה מקצועית</span>
-            </li>
+            <li class="flex items-center rtl:flex-row-reverse"><i class="fas fa-check-circle text-green-500 ml-2"></i><span>24 שיעורים מעשיים</span></li>
+            <li class="flex items-center rtl:flex-row-reverse"><i class="fas fa-check-circle text-green-500 ml-2"></i><span>תרגול מעשי עם פרויקטים</span></li>
+            <li class="flex items-center rtl:flex-row-reverse"><i class="fas fa-check-circle text-green-500 ml-2"></i><span>תמיכה אישית</span></li>
+            <li class="flex items-center rtl:flex-row-reverse"><i class="fas fa-check-circle text-green-500 ml-2"></i><span>תעודה מקצועית</span></li>
           </ul>
-          <div class="flex justify-between items-center pt-4 border-t border-gray-100">
+          <div class="flex justify-between items-center pt-4 border-t border-gray-100 rtl:flex-row-reverse">
             <div>
               <span class="text-2xl font-bold text-blue-600">₪1,990</span>
               <span class="text-sm text-gray-500 mr-2">במקום ₪2,490</span>
             </div>
-            <button onclick="showCheckout('SQL מאפס למתקדמים')" 
-                    class="btn-primary flex items-center">
+            <button onclick="showCheckout('SQL מאפס למתקדמים')" class="btn-primary flex items-center transition-transform duration-200 hover:scale-105 focus:scale-105">
               <i class="fas fa-shopping-cart ml-2"></i>
               קנה עכשיו
             </button>
           </div>
         </div>
       </div>
+      <div class="course-card group">
+        <div class="relative overflow-hidden">
+          <img src="https://images.unsplash.com/photo-1519389950473-47ba0277781c?ixlib=rb-1.2.1&auto=format&fit=crop&w=800&q=80" 
+               alt="קורס Python לניתוח נתונים" 
+               class="w-full h-48 object-cover transform group-hover:scale-110 transition-transform duration-500">
+          <div class="absolute inset-0 bg-gradient-to-t from-blue-900 to-transparent opacity-0 group-hover:opacity-60 transition-opacity duration-300"></div>
+        </div>
+        <div class="p-6 text-right">
+          <h3 class="text-2xl font-semibold text-blue-700 mb-3">Python לניתוח נתונים</h3>
+          <ul class="text-gray-600 mb-6 space-y-3">
+            <li class="flex items-center rtl:flex-row-reverse"><i class="fas fa-check-circle text-green-500 ml-2"></i><span>30 שיעורים מוקלטים</span></li>
+            <li class="flex items-center rtl:flex-row-reverse"><i class="fas fa-check-circle text-green-500 ml-2"></i><span>פרויקטים מעשיים</span></li>
+            <li class="flex items-center rtl:flex-row-reverse"><i class="fas fa-check-circle text-green-500 ml-2"></i><span>תמיכה בקבוצת וואטסאפ</span></li>
+            <li class="flex items-center rtl:flex-row-reverse"><i class="fas fa-check-circle text-green-500 ml-2"></i><span>תעודה בסיום</span></li>
+          </ul>
+          <div class="flex justify-between items-center pt-4 border-t border-gray-100 rtl:flex-row-reverse">
+            <div>
+              <span class="text-2xl font-bold text-blue-600">₪2,200</span>
+              <span class="text-sm text-gray-500 mr-2">במקום ₪2,800</span>
+            </div>
+            <button onclick="showCheckout('Python לניתוח נתונים')" class="btn-primary flex items-center transition-transform duration-200 hover:scale-105 focus:scale-105">
+              <i class="fas fa-shopping-cart ml-2"></i>
+              קנה עכשיו
+            </button>
+          </div>
+        </div>
+      </div>
+      <div class="course-card group">
+        <div class="relative overflow-hidden">
+          <img src="https://images.unsplash.com/photo-1461749280684-dccba630e2f6?ixlib=rb-1.2.1&auto=format&fit=crop&w=800&q=80" 
+               alt="קורס BI ודשבורדים" 
+               class="w-full h-48 object-cover transform group-hover:scale-110 transition-transform duration-500">
+          <div class="absolute inset-0 bg-gradient-to-t from-blue-900 to-transparent opacity-0 group-hover:opacity-60 transition-opacity duration-300"></div>
+        </div>
+        <div class="p-6 text-right">
+          <h3 class="text-2xl font-semibold text-blue-700 mb-3">BI ודשבורדים</h3>
+          <ul class="text-gray-600 mb-6 space-y-3">
+            <li class="flex items-center rtl:flex-row-reverse"><i class="fas fa-check-circle text-green-500 ml-2"></i><span>18 שיעורים</span></li>
+            <li class="flex items-center rtl:flex-row-reverse"><i class="fas fa-check-circle text-green-500 ml-2"></i><span>כלי BI מובילים</span></li>
+            <li class="flex items-center rtl:flex-row-reverse"><i class="fas fa-check-circle text-green-500 ml-2"></i><span>תרגול מעשי</span></li>
+            <li class="flex items-center rtl:flex-row-reverse"><i class="fas fa-check-circle text-green-500 ml-2"></i><span>תעודה מקצועית</span></li>
+          </ul>
+          <div class="flex justify-between items-center pt-4 border-t border-gray-100 rtl:flex-row-reverse">
+            <div>
+              <span class="text-2xl font-bold text-blue-600">₪1,800</span>
+              <span class="text-sm text-gray-500 mr-2">במקום ₪2,200</span>
+            </div>
+            <button onclick="showCheckout('BI ודשבורדים')" class="btn-primary flex items-center transition-transform duration-200 hover:scale-105 focus:scale-105">
+              <i class="fas fa-shopping-cart ml-2"></i>
+              קנה עכשיו
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="flex justify-center mt-8">
+      <a href="#" class="btn-secondary text-lg font-bold px-8 py-3 transition-transform duration-200 hover:scale-105 focus:scale-105">צפה בכל הקורסים</a>
     </div>
   </div>
 </section>
@@ -682,6 +732,30 @@
     </div>
   </div>
 </footer>
+
+<!-- אזור בלוג דוגמה -->
+<section id="blog" class="py-20 bg-blue-50">
+  <div class="max-w-6xl mx-auto px-4">
+    <h2 class="section-title text-right">בלוג ומאמרים</h2>
+    <div class="grid grid-cols-1 md:grid-cols-3 gap-10 rtl:flex-row-reverse">
+      <div class="bg-white p-8 rounded-lg shadow-lg flex flex-col text-right">
+        <h3 class="text-xl font-bold mb-2">איך לבחור קורס דאטה?</h3>
+        <p class="text-gray-600 mb-4">מדריך קצר שיעזור לכם לבחור את הקורס המתאים ביותר לקריירה שלכם.</p>
+        <a href="#" class="btn-secondary w-max transition-transform duration-200 hover:scale-105 focus:scale-105">קרא עוד</a>
+      </div>
+      <div class="bg-white p-8 rounded-lg shadow-lg flex flex-col text-right">
+        <h3 class="text-xl font-bold mb-2">5 טיפים ללמידה עצמאית</h3>
+        <p class="text-gray-600 mb-4">איך להצליח בלמידה מקוונת ולשמור על מוטיבציה גבוהה.</p>
+        <a href="#" class="btn-secondary w-max transition-transform duration-200 hover:scale-105 focus:scale-105">קרא עוד</a>
+      </div>
+      <div class="bg-white p-8 rounded-lg shadow-lg flex flex-col text-right">
+        <h3 class="text-xl font-bold mb-2">העתיד של מקצועות הדאטה</h3>
+        <p class="text-gray-600 mb-4">סקירה על המגמות החמות בעולם הדאטה והבינה המלאכותית.</p>
+        <a href="#" class="btn-secondary w-max transition-transform duration-200 hover:scale-105 focus:scale-105">קרא עוד</a>
+      </div>
+    </div>
+  </div>
+</section>
 
 </body>
 </html>
