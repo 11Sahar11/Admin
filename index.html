@@ -284,45 +284,39 @@
     }
   </style>
 </head>
-<body class="bg-gradient-to-br from-blue-50 to-blue-100 text-gray-800 font-sans">
+<body class="bg-gradient-to-br from-blue-50 to-blue-100 text-gray-800 font-sans rtl">
 
 <!-- תפריט ניווט משופר -->
 <header class="sticky-nav">
   <nav class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-    <div class="flex justify-between items-center h-20">
-      <!-- לוגו וכותרת -->
-      <div class="logo-container">
+    <div class="flex justify-between items-center h-20 rtl:flex-row-reverse">
+      <div class="logo-container rtl:flex-row-reverse rtl:space-x-reverse">
         <img src="ai_logo.png" alt="לוגו מכללת AI" class="logo-img" />
-        <div>
+        <div class="text-right">
           <h1 class="logo-text">מכללת AI</h1>
           <p class="logo-subtitle">מצוינות בלימוד מקצועות הדאטה</p>
         </div>
       </div>
-
-      <!-- תפריט ניווט למסכים גדולים -->
-      <div class="hidden md:flex items-center space-x-8 rtl:space-x-reverse">
+      <div class="hidden md:flex items-center space-x-8 rtl:space-x-reverse rtl:flex-row-reverse">
         <a href="#courses" onclick="smoothScroll('#courses')" class="nav-link text-blue-600 hover:text-blue-800 font-medium">קורסים</a>
         <a href="#benefits" onclick="smoothScroll('#benefits')" class="nav-link text-blue-600 hover:text-blue-800 font-medium">יתרונות</a>
         <a href="#testimonials" onclick="smoothScroll('#testimonials')" class="nav-link text-blue-600 hover:text-blue-800 font-medium">המלצות</a>
         <a href="#contact" onclick="smoothScroll('#contact')" class="nav-link text-blue-600 hover:text-blue-800 font-medium">צור קשר</a>
         <a href="#courses" onclick="smoothScroll('#courses')" class="btn-cta ml-4">להתחלת הרשמה</a>
       </div>
-
-      <!-- כפתור תפריט מובייל -->
       <div class="md:hidden">
         <button onclick="toggleMobileMenu()" class="text-blue-600 hover:text-blue-800 focus:outline-none">
           <i class="fas fa-bars text-2xl"></i>
         </button>
       </div>
     </div>
-
-    <!-- תפריט מובייל -->
-    <div id="mobile-menu" class="hidden md:hidden mobile-menu">
+    <div id="mobile-menu" class="hidden md:hidden mobile-menu text-right rtl:flex-row-reverse">
       <div class="px-2 pt-2 pb-3 space-y-1">
         <a href="#courses" onclick="smoothScroll('#courses')" class="block px-3 py-2 rounded-md text-base font-medium text-blue-600 hover:text-blue-800 hover:bg-blue-50">קורסים</a>
         <a href="#benefits" onclick="smoothScroll('#benefits')" class="block px-3 py-2 rounded-md text-base font-medium text-blue-600 hover:text-blue-800 hover:bg-blue-50">יתרונות</a>
         <a href="#testimonials" onclick="smoothScroll('#testimonials')" class="block px-3 py-2 rounded-md text-base font-medium text-blue-600 hover:text-blue-800 hover:bg-blue-50">המלצות</a>
-        <a href="#courses" onclick="smoothScroll('#courses')" class="block px-3 py-2 rounded-md text-base font-medium bg-blue-600 text-white hover:bg-blue-700">לצפייה בקורסים</a>
+        <a href="#contact" onclick="smoothScroll('#contact')" class="block px-3 py-2 rounded-md text-base font-medium text-blue-600 hover:text-blue-800 hover:bg-blue-50">צור קשר</a>
+        <a href="#courses" onclick="smoothScroll('#courses')" class="block px-3 py-2 rounded-md text-base font-medium bg-blue-600 text-white hover:bg-blue-700">להתחלת הרשמה</a>
       </div>
     </div>
   </nav>
@@ -344,8 +338,8 @@
 
 <section id="benefits" class="py-20 bg-white">
   <div class="max-w-6xl mx-auto px-4">
-    <h2 class="section-title">למה לבחור במכללת AI?</h2>
-    <div class="grid grid-cols-1 md:grid-cols-3 gap-10">
+    <h2 class="section-title text-right">למה לבחור במכללת AI?</h2>
+    <div class="grid grid-cols-1 md:grid-cols-3 gap-10 rtl:flex-row-reverse">
       <div class="text-center p-8 rounded-lg bg-blue-50 shadow-md hover:shadow-xl transition-all">
         <i class="fas fa-graduation-cap benefit-icon"></i>
         <h3 class="text-xl font-bold mb-2">לימוד מעשי</h3>
@@ -415,11 +409,11 @@
 
 <section id="testimonials" class="bg-blue-50 py-20">
   <div class="max-w-6xl mx-auto px-4">
-    <h2 class="section-title">מה הבוגרים שלנו אומרים</h2>
-    <div class="grid grid-cols-1 md:grid-cols-3 gap-10">
-      <div class="bg-white p-8 rounded-lg shadow-lg flex flex-col items-center">
+    <h2 class="section-title text-right">מה הבוגרים שלנו אומרים</h2>
+    <div class="grid grid-cols-1 md:grid-cols-3 gap-10 rtl:flex-row-reverse">
+      <div class="bg-white p-8 rounded-lg shadow-lg flex flex-col items-center text-right">
         <img src="https://randomuser.me/api/portraits/men/32.jpg" alt="דני כהן" class="testimonial-img" />
-        <div class="flex items-center mb-2 mt-4">
+        <div class="flex items-center mb-2 mt-4 rtl:flex-row-reverse rtl:space-x-reverse">
           <i class="fas fa-star text-yellow-400"></i>
           <i class="fas fa-star text-yellow-400"></i>
           <i class="fas fa-star text-yellow-400"></i>
@@ -429,9 +423,9 @@
         <p class="text-gray-600 mb-4 text-center">"הקורס שינה את הקריירה שלי. הלימוד המעשי והתמיכה האישית עזרו לי להשתלב בתחום."</p>
         <p class="font-semibold text-blue-700">- דני כהן, אנליסט דאטה</p>
       </div>
-      <div class="bg-white p-8 rounded-lg shadow-lg flex flex-col items-center">
+      <div class="bg-white p-8 rounded-lg shadow-lg flex flex-col items-center text-right">
         <img src="https://randomuser.me/api/portraits/women/44.jpg" alt="נועה לוי" class="testimonial-img" />
-        <div class="flex items-center mb-2 mt-4">
+        <div class="flex items-center mb-2 mt-4 rtl:flex-row-reverse rtl:space-x-reverse">
           <i class="fas fa-star text-yellow-400"></i>
           <i class="fas fa-star text-yellow-400"></i>
           <i class="fas fa-star text-yellow-400"></i>
@@ -441,9 +435,9 @@
         <p class="text-gray-600 mb-4 text-center">"המרצים מקצועיים, החומר ברור, והקורסים נגישים מכל מקום. ממליצה בחום!"</p>
         <p class="font-semibold text-blue-700">- נועה לוי, סטודנטית</p>
       </div>
-      <div class="bg-white p-8 rounded-lg shadow-lg flex flex-col items-center">
+      <div class="bg-white p-8 rounded-lg shadow-lg flex flex-col items-center text-right">
         <img src="https://randomuser.me/api/portraits/men/45.jpg" alt="יוסי ישראלי" class="testimonial-img" />
-        <div class="flex items-center mb-2 mt-4">
+        <div class="flex items-center mb-2 mt-4 rtl:flex-row-reverse rtl:space-x-reverse">
           <i class="fas fa-star text-yellow-400"></i>
           <i class="fas fa-star text-yellow-400"></i>
           <i class="fas fa-star text-yellow-400"></i>
