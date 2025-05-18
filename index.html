@@ -10,16 +10,30 @@
       document.getElementById("checkout-title").innerText = "רכישת קורס: " + course;
       document.getElementById("checkout-form").style.display = "block";
       document.getElementById("selected-course").value = course;
+      document.getElementById("payment-options").style.display = "none";
     }
 
     function confirmPurchase(e) {
       e.preventDefault();
-      const course = document.getElementById("selected-course").value;
-      const email = document.getElementById("user-email").value;
-      const phone = document.getElementById("user-phone").value;
+      const form = e.target;
+      const data = new FormData(form);
+
+      // שליחה שקטה ל-Google Forms
+      fetch(form.action, {
+        method: "POST",
+        mode: "no-cors",
+        body: data
+      });
+
+      // הצגת כפתורי תשלום
       document.getElementById("checkout-form").style.display = "none";
       document.getElementById("payment-options").style.display = "block";
-      document.getElementById("confirm-info").innerText = `📘 ${course}\n📧 ${email}\n📱 ${phone}`;
+
+      const course = data.get("entry.866810673");
+      const email = data.get("entry.1774096305");
+      const phone = data.get("entry.523504237");
+      document.getElementById("confirm-info").innerText =
+        `📘 קורס: ${course}\n📧 מייל: ${email}\n📱 טלפון: ${phone}`;
     }
   </script>
   <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
@@ -47,10 +61,10 @@
 <section id="checkout-form" style="display:none" class="bg-white py-10">
   <div class="max-w-xl mx-auto text-center">
     <h3 id="checkout-title" class="text-2xl font-bold text-blue-800 mb-4">רכישת קורס</h3>
-    <form onsubmit="confirmPurchase(event)" class="space-y-4 text-right">
-      <input type="hidden" id="selected-course" name="course" />
-      <input type="email" id="user-email" placeholder="אימייל לקבלת הקורס" class="w-full p-3 border border-gray-300 rounded" required>
-      <input type="text" id="user-phone" placeholder="מספר טלפון לשליחה" class="w-full p-3 border border-gray-300 rounded" required>
+    <form onsubmit="confirmPurchase(event)" action="https://docs.google.com/forms/d/e/1FAIpQLSffOFMdDy-dqPxfOyuih64IIqRA93aSw9KAWcgZeRejzw0yPQ/formResponse" method="POST" class="space-y-4 text-right">
+      <input type="text" name="entry.866810673" placeholder="שם קורס" class="w-full p-3 border border-gray-300 rounded" value="SQL מאפס למתקדמים" readonly>
+      <input type="email" name="entry.1774096305" placeholder="אימייל לקבלת הקורס" class="w-full p-3 border border-gray-300 rounded" required>
+      <input type="text" name="entry.523504237" placeholder="מספר טלפון לשליחה" class="w-full p-3 border border-gray-300 rounded" required>
       <button type="submit" class="bg-blue-600 text-white px-6 py-2 rounded hover:bg-blue-700">המשך לתשלום</button>
     </form>
   </div>
