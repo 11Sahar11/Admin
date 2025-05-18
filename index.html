@@ -34,32 +34,233 @@
       document.getElementById("confirm-info").innerText =
         `📘 קורס: ${course}\n📧 מייל: ${email}\n📱 טלפון: ${phone}`;
     }
+
+    // הוספת פונקציה לניווט חלק
+    function smoothScroll(target) {
+      const element = document.querySelector(target);
+      window.scrollTo({
+        top: element.offsetTop - 80,
+        behavior: 'smooth'
+      });
+    }
+
+    // הוספת פונקציה לתפריט מובייל
+    function toggleMobileMenu() {
+      const menu = document.getElementById('mobile-menu');
+      menu.classList.toggle('hidden');
+    }
+
+    // פונקציה לפתיחת/סגירת שאלות FAQ
+    function toggleFAQ(element) {
+      const answer = element.nextElementSibling;
+      answer.classList.toggle('active');
+      const icon = element.querySelector('i');
+      icon.classList.toggle('fa-chevron-down');
+      icon.classList.toggle('fa-chevron-up');
+    }
+
+    // פונקציה לשליחת טופס יצירת קשר
+    function submitContactForm(e) {
+      e.preventDefault();
+      // כאן תהיה הלוגיקה לשליחת הטופס
+      alert('תודה על פנייתך! נחזור אליך בהקדם.');
+      e.target.reset();
+    }
   </script>
   <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+  <style>
+    /* אנימציות מותאמות אישית */
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(20px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+    
+    .animate-fade-in {
+      animation: fadeIn 0.6s ease-out forwards;
+    }
+
+    .nav-link {
+      position: relative;
+      transition: color 0.3s ease;
+    }
+
+    .nav-link::after {
+      content: '';
+      position: absolute;
+      width: 0;
+      height: 2px;
+      bottom: -4px;
+      right: 0;
+      background-color: #2563eb;
+      transition: width 0.3s ease;
+    }
+
+    .nav-link:hover::after {
+      width: 100%;
+    }
+
+    .mobile-menu {
+      transition: all 0.3s ease-in-out;
+    }
+
+    /* עיצוב מותאם לכפתורים */
+    .btn-primary {
+      @apply bg-blue-600 text-white px-6 py-2 rounded-lg transition-all duration-300 transform hover:scale-105 hover:shadow-lg;
+    }
+
+    .btn-secondary {
+      @apply border-2 border-white text-white px-6 py-2 rounded-lg transition-all duration-300 hover:bg-white hover:text-blue-600;
+    }
+
+    /* עיצוב מותאם לכרטיסי קורס */
+    .course-card {
+      @apply bg-white rounded-xl shadow-lg overflow-hidden transform transition-all duration-300 hover:scale-105 hover:shadow-xl;
+    }
+
+    /* עיצוב מותאם לסקציות */
+    .section-padding {
+      @apply py-20;
+    }
+
+    .section-title {
+      @apply text-4xl font-bold text-center text-blue-800 mb-12 relative;
+    }
+
+    .section-title::after {
+      content: '';
+      position: absolute;
+      bottom: -10px;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 60px;
+      height: 3px;
+      background-color: #2563eb;
+    }
+
+    /* אנימציות נוספות */
+    @keyframes float {
+      0% { transform: translateY(0px); }
+      50% { transform: translateY(-10px); }
+      100% { transform: translateY(0px); }
+    }
+
+    .animate-float {
+      animation: float 3s ease-in-out infinite;
+    }
+
+    @keyframes pulse {
+      0% { transform: scale(1); }
+      50% { transform: scale(1.05); }
+      100% { transform: scale(1); }
+    }
+
+    .animate-pulse {
+      animation: pulse 2s ease-in-out infinite;
+    }
+
+    /* עיצוב מותאם לסטטיסטיקות */
+    .stat-card {
+      @apply bg-white rounded-xl shadow-lg p-6 text-center transform transition-all duration-300 hover:scale-105;
+    }
+
+    .stat-number {
+      @apply text-4xl font-bold text-blue-600 mb-2;
+    }
+
+    /* עיצוב מותאם ל-FAQ */
+    .faq-item {
+      @apply border-b border-gray-200 last:border-0;
+    }
+
+    .faq-question {
+      @apply flex justify-between items-center py-4 cursor-pointer;
+    }
+
+    .faq-answer {
+      @apply hidden py-4 text-gray-600;
+    }
+
+    .faq-answer.active {
+      @apply block;
+    }
+
+    /* עיצוב מותאם לטופס יצירת קשר */
+    .contact-form {
+      @apply bg-white rounded-xl shadow-lg p-8;
+    }
+
+    .form-input {
+      @apply w-full p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all duration-300;
+    }
+
+    .form-label {
+      @apply block text-gray-700 font-medium mb-2;
+    }
+
+    /* עיצוב מותאם לכפתורי מדיה חברתית */
+    .social-button {
+      @apply w-12 h-12 rounded-full flex items-center justify-center text-white transition-all duration-300 transform hover:scale-110;
+    }
+  </style>
 </head>
 <body class="bg-gradient-to-br from-blue-50 to-blue-100 text-gray-800 font-sans">
 
-<header class="bg-white shadow-lg p-6 flex justify-between items-center sticky top-0 z-50">
-  <div class="flex items-center space-x-4">
-    <img src="ai_logo.png" alt="לוגו מכללת AI" class="h-12 w-auto">
-    <h1 class="text-3xl font-bold text-blue-700">מכללת AI</h1>
-  </div>
-  <nav class="space-x-4">
-    <a href="#courses" class="text-blue-600 hover:text-blue-800">קורסים</a>
-    <a href="#benefits" class="text-blue-600 hover:text-blue-800">יתרונות</a>
-    <a href="#testimonials" class="text-blue-600 hover:text-blue-800">המלצות</a>
-    <a href="#courses" class="bg-blue-600 text-white px-6 py-2 rounded-lg hover:bg-blue-700 transition duration-300">לצפייה בקורסים</a>
+<!-- תפריט ניווט משופר -->
+<header class="bg-white shadow-lg sticky top-0 z-50">
+  <nav class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+    <div class="flex justify-between items-center h-20">
+      <!-- לוגו וכותרת -->
+      <div class="flex items-center space-x-4 rtl:space-x-reverse">
+        <img src="ai_logo.png" alt="לוגו מכללת AI" class="h-12 w-auto">
+        <h1 class="text-3xl font-bold text-blue-700">מכללת AI</h1>
+      </div>
+
+      <!-- תפריט ניווט למסכים גדולים -->
+      <div class="hidden md:flex items-center space-x-8 rtl:space-x-reverse">
+        <a href="#courses" onclick="smoothScroll('#courses')" class="nav-link text-blue-600 hover:text-blue-800 font-medium">קורסים</a>
+        <a href="#benefits" onclick="smoothScroll('#benefits')" class="nav-link text-blue-600 hover:text-blue-800 font-medium">יתרונות</a>
+        <a href="#testimonials" onclick="smoothScroll('#testimonials')" class="nav-link text-blue-600 hover:text-blue-800 font-medium">המלצות</a>
+        <a href="#courses" onclick="smoothScroll('#courses')" class="btn-primary">לצפייה בקורסים</a>
+      </div>
+
+      <!-- כפתור תפריט מובייל -->
+      <div class="md:hidden">
+        <button onclick="toggleMobileMenu()" class="text-blue-600 hover:text-blue-800 focus:outline-none">
+          <i class="fas fa-bars text-2xl"></i>
+        </button>
+      </div>
+    </div>
+
+    <!-- תפריט מובייל -->
+    <div id="mobile-menu" class="hidden md:hidden mobile-menu">
+      <div class="px-2 pt-2 pb-3 space-y-1">
+        <a href="#courses" onclick="smoothScroll('#courses')" class="block px-3 py-2 rounded-md text-base font-medium text-blue-600 hover:text-blue-800 hover:bg-blue-50">קורסים</a>
+        <a href="#benefits" onclick="smoothScroll('#benefits')" class="block px-3 py-2 rounded-md text-base font-medium text-blue-600 hover:text-blue-800 hover:bg-blue-50">יתרונות</a>
+        <a href="#testimonials" onclick="smoothScroll('#testimonials')" class="block px-3 py-2 rounded-md text-base font-medium text-blue-600 hover:text-blue-800 hover:bg-blue-50">המלצות</a>
+        <a href="#courses" onclick="smoothScroll('#courses')" class="block px-3 py-2 rounded-md text-base font-medium bg-blue-600 text-white hover:bg-blue-700">לצפייה בקורסים</a>
+      </div>
+    </div>
   </nav>
 </header>
 
-<section class="relative py-20 bg-gradient-to-r from-blue-600 to-blue-800 text-white">
-  <div class="max-w-6xl mx-auto px-4 text-center">
-    <h2 class="text-5xl font-bold mb-6">ללמוד מקצוע מבוקש בקצב שלך</h2>
-    <p class="text-xl mb-8">הצטרפו לקורסים מקצועיים בתחום הדאטה עם שליחה אוטומטית לאחר רכישה</p>
-    <div class="flex justify-center space-x-4">
-      <a href="#courses" class="bg-white text-blue-600 px-8 py-3 rounded-lg hover:bg-blue-50 transition duration-300 text-lg font-semibold">לצפייה בקורסים</a>
-      <a href="#benefits" class="border-2 border-white text-white px-8 py-3 rounded-lg hover:bg-white hover:text-blue-600 transition duration-300 text-lg font-semibold">למידע נוסף</a>
+<!-- סקציית כותרת ראשית משופרת -->
+<section class="relative py-32 bg-gradient-to-r from-blue-600 to-blue-800 text-white overflow-hidden">
+  <div class="absolute inset-0 bg-grid-pattern opacity-10"></div>
+  <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative">
+    <div class="text-center animate-fade-in">
+      <h2 class="text-5xl md:text-6xl font-bold mb-6 leading-tight">ללמוד מקצוע מבוקש<br>בקצב שלך</h2>
+      <p class="text-xl md:text-2xl mb-12 text-blue-100">הצטרפו לקורסים מקצועיים בתחום הדאטה<br>עם שליחה אוטומטית לאחר רכישה</p>
+      <div class="flex flex-col sm:flex-row justify-center items-center space-y-4 sm:space-y-0 sm:space-x-4 rtl:space-x-reverse">
+        <a href="#courses" onclick="smoothScroll('#courses')" class="btn-primary w-full sm:w-auto text-center">
+          <i class="fas fa-graduation-cap ml-2"></i>
+          לצפייה בקורסים
+        </a>
+        <a href="#benefits" onclick="smoothScroll('#benefits')" class="btn-secondary w-full sm:w-auto text-center">
+          <i class="fas fa-info-circle ml-2"></i>
+          למידע נוסף
+        </a>
+      </div>
     </div>
   </div>
 </section>
@@ -87,22 +288,48 @@
   </div>
 </section>
 
-<section id="courses" class="max-w-6xl mx-auto px-4 py-16">
-  <h2 class="text-4xl font-bold text-center text-blue-800 mb-12">הקורסים שלנו</h2>
-  <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
-    <div class="bg-white rounded-xl shadow-lg overflow-hidden transform hover:scale-105 transition duration-300">
-      <img src="https://images.unsplash.com/photo-1544383835-bda2bc66a55d?ixlib=rb-1.2.1&auto=format&fit=crop&w=800&q=80" alt="SQL Course" class="w-full h-48 object-cover">
-      <div class="p-6">
-        <h3 class="text-2xl font-semibold text-blue-700 mb-3">SQL מאפס למתקדמים</h3>
-        <ul class="text-gray-600 mb-4 space-y-2">
-          <li><i class="fas fa-check text-green-500 mr-2"></i>24 שיעורים מעשיים</li>
-          <li><i class="fas fa-check text-green-500 mr-2"></i>תרגול מעשי עם פרויקטים</li>
-          <li><i class="fas fa-check text-green-500 mr-2"></i>תמיכה אישית</li>
-          <li><i class="fas fa-check text-green-500 mr-2"></i>תעודה מקצועית</li>
-        </ul>
-        <div class="flex justify-between items-center">
-          <span class="text-2xl font-bold text-blue-600">₪1,990</span>
-          <button onclick="showCheckout('SQL מאפס למתקדמים')" class="bg-green-600 text-white px-6 py-2 rounded-lg hover:bg-green-700 transition duration-300">קנה עכשיו</button>
+<section id="courses" class="section-padding bg-gradient-to-b from-white to-blue-50">
+  <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+    <h2 class="section-title">הקורסים שלנו</h2>
+    <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+      <div class="course-card group">
+        <div class="relative overflow-hidden">
+          <img src="https://images.unsplash.com/photo-1544383835-bda2bc66a55d?ixlib=rb-1.2.1&auto=format&fit=crop&w=800&q=80" 
+               alt="SQL Course" 
+               class="w-full h-48 object-cover transform group-hover:scale-110 transition-transform duration-500">
+          <div class="absolute inset-0 bg-gradient-to-t from-blue-900 to-transparent opacity-0 group-hover:opacity-60 transition-opacity duration-300"></div>
+        </div>
+        <div class="p-6">
+          <h3 class="text-2xl font-semibold text-blue-700 mb-3">SQL מאפס למתקדמים</h3>
+          <ul class="text-gray-600 mb-6 space-y-3">
+            <li class="flex items-center">
+              <i class="fas fa-check-circle text-green-500 ml-2"></i>
+              <span>24 שיעורים מעשיים</span>
+            </li>
+            <li class="flex items-center">
+              <i class="fas fa-check-circle text-green-500 ml-2"></i>
+              <span>תרגול מעשי עם פרויקטים</span>
+            </li>
+            <li class="flex items-center">
+              <i class="fas fa-check-circle text-green-500 ml-2"></i>
+              <span>תמיכה אישית</span>
+            </li>
+            <li class="flex items-center">
+              <i class="fas fa-check-circle text-green-500 ml-2"></i>
+              <span>תעודה מקצועית</span>
+            </li>
+          </ul>
+          <div class="flex justify-between items-center pt-4 border-t border-gray-100">
+            <div>
+              <span class="text-2xl font-bold text-blue-600">₪1,990</span>
+              <span class="text-sm text-gray-500 mr-2">במקום ₪2,490</span>
+            </div>
+            <button onclick="showCheckout('SQL מאפס למתקדמים')" 
+                    class="btn-primary flex items-center">
+              <i class="fas fa-shopping-cart ml-2"></i>
+              קנה עכשיו
+            </button>
+          </div>
         </div>
       </div>
     </div>
@@ -167,29 +394,198 @@
   </div>
 </section>
 
-<footer class="bg-blue-800 text-white py-12">
-  <div class="max-w-6xl mx-auto px-4">
-    <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
-      <div>
-        <h4 class="text-xl font-semibold mb-4">מכללת AI</h4>
-        <p class="text-blue-200">מצוינות בלימוד מקצועות הדאטה</p>
+<!-- סקציית סטטיסטיקות חדשה -->
+<section class="py-16 bg-white">
+  <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+    <div class="grid grid-cols-1 md:grid-cols-4 gap-8">
+      <div class="stat-card">
+        <i class="fas fa-users text-4xl text-blue-600 mb-4"></i>
+        <div class="stat-number">1,500+</div>
+        <p class="text-gray-600">בוגרים</p>
       </div>
-      <div>
-        <h4 class="text-xl font-semibold mb-4">צור קשר</h4>
-        <p class="text-blue-200">טלפון: 03-1234567</p>
-        <p class="text-blue-200">מייל: info@ai-college.co.il</p>
+      <div class="stat-card">
+        <i class="fas fa-graduation-cap text-4xl text-blue-600 mb-4"></i>
+        <div class="stat-number">95%</div>
+        <p class="text-gray-600">הצלחה בקורסים</p>
       </div>
-      <div>
-        <h4 class="text-xl font-semibold mb-4">עקבו אחרינו</h4>
-        <div class="flex space-x-4">
-          <a href="#" class="text-blue-200 hover:text-white"><i class="fab fa-facebook"></i></a>
-          <a href="#" class="text-blue-200 hover:text-white"><i class="fab fa-linkedin"></i></a>
-          <a href="#" class="text-blue-200 hover:text-white"><i class="fab fa-instagram"></i></a>
+      <div class="stat-card">
+        <i class="fas fa-briefcase text-4xl text-blue-600 mb-4"></i>
+        <div class="stat-number">85%</div>
+        <p class="text-gray-600">השמה בתעשייה</p>
+      </div>
+      <div class="stat-card">
+        <i class="fas fa-star text-4xl text-blue-600 mb-4"></i>
+        <div class="stat-number">4.9</div>
+        <p class="text-gray-600">דירוג ממוצע</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- סקציית FAQ חדשה -->
+<section class="py-16 bg-blue-50">
+  <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
+    <h2 class="section-title">שאלות נפוצות</h2>
+    <div class="bg-white rounded-xl shadow-lg divide-y divide-gray-200">
+      <div class="faq-item">
+        <div class="faq-question" onclick="toggleFAQ(this)">
+          <span class="text-lg font-medium">כמה זמן לוקח להשלים את הקורס?</span>
+          <i class="fas fa-chevron-down text-blue-600"></i>
+        </div>
+        <div class="faq-answer">
+          <p>הקורס מותאם לקצב האישי שלך. רוב התלמידים מסיימים את הקורס תוך 3-4 חודשים, אבל יש לך גישה לחומרים למשך שנה שלמה.</p>
+        </div>
+      </div>
+      <div class="faq-item">
+        <div class="faq-question" onclick="toggleFAQ(this)">
+          <span class="text-lg font-medium">האם יש תמיכה טכנית במהלך הקורס?</span>
+          <i class="fas fa-chevron-down text-blue-600"></i>
+        </div>
+        <div class="faq-answer">
+          <p>כן, יש לך גישה לצוות תמיכה טכנית זמין 24/7, כולל עזרה בפרויקטים ותרגול מעשי.</p>
+        </div>
+      </div>
+      <div class="faq-item">
+        <div class="faq-question" onclick="toggleFAQ(this)">
+          <span class="text-lg font-medium">האם התעודה מוכרת בתעשייה?</span>
+          <i class="fas fa-chevron-down text-blue-600"></i>
+        </div>
+        <div class="faq-answer">
+          <p>כן, התעודה שלנו מוכרת בתעשיית ההייטק והדאטה. רבים מהבוגרים שלנו משתלבים בחברות מובילות.</p>
         </div>
       </div>
     </div>
-    <div class="border-t border-blue-700 mt-8 pt-8 text-center">
-      <p>© 2025 מכללת AI | כל הזכויות שמורות</p>
+  </div>
+</section>
+
+<!-- סקציית יצירת קשר משופרת -->
+<section class="py-16 bg-white">
+  <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+    <h2 class="section-title">צור קשר</h2>
+    <div class="grid grid-cols-1 md:grid-cols-2 gap-12">
+      <div class="contact-form">
+        <form onsubmit="submitContactForm(event)" class="space-y-6">
+          <div>
+            <label class="form-label">שם מלא</label>
+            <input type="text" class="form-input" required>
+          </div>
+          <div>
+            <label class="form-label">אימייל</label>
+            <input type="email" class="form-input" required>
+          </div>
+          <div>
+            <label class="form-label">טלפון</label>
+            <input type="tel" class="form-input" required>
+          </div>
+          <div>
+            <label class="form-label">הודעה</label>
+            <textarea class="form-input h-32" required></textarea>
+          </div>
+          <button type="submit" class="btn-primary w-full">
+            <i class="fas fa-paper-plane ml-2"></i>
+            שלח הודעה
+          </button>
+        </form>
+      </div>
+      <div class="space-y-8">
+        <div class="bg-blue-50 rounded-xl p-6">
+          <h3 class="text-xl font-semibold text-blue-800 mb-4">פרטי התקשרות</h3>
+          <div class="space-y-4">
+            <p class="flex items-center">
+              <i class="fas fa-map-marker-alt text-blue-600 ml-3"></i>
+              רחוב הברזל 3, תל אביב
+            </p>
+            <p class="flex items-center">
+              <i class="fas fa-phone text-blue-600 ml-3"></i>
+              03-1234567
+            </p>
+            <p class="flex items-center">
+              <i class="fas fa-envelope text-blue-600 ml-3"></i>
+              info@ai-college.co.il
+            </p>
+          </div>
+        </div>
+        <div>
+          <h3 class="text-xl font-semibold text-blue-800 mb-4">עקבו אחרינו</h3>
+          <div class="flex space-x-4 rtl:space-x-reverse">
+            <a href="#" class="social-button bg-blue-600">
+              <i class="fab fa-facebook-f"></i>
+            </a>
+            <a href="#" class="social-button bg-blue-400">
+              <i class="fab fa-linkedin-in"></i>
+            </a>
+            <a href="#" class="social-button bg-pink-600">
+              <i class="fab fa-instagram"></i>
+            </a>
+            <a href="#" class="social-button bg-green-500">
+              <i class="fab fa-whatsapp"></i>
+            </a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- פוטר משופר -->
+<footer class="bg-blue-900 text-white py-16">
+  <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+    <div class="grid grid-cols-1 md:grid-cols-4 gap-12">
+      <div>
+        <h4 class="text-xl font-semibold mb-6">מכללת AI</h4>
+        <p class="text-blue-200 mb-4">מצוינות בלימוד מקצועות הדאטה והבינה המלאכותית</p>
+        <div class="flex space-x-4 rtl:space-x-reverse">
+          <a href="#" class="text-blue-200 hover:text-white transition-colors">
+            <i class="fab fa-facebook-f"></i>
+          </a>
+          <a href="#" class="text-blue-200 hover:text-white transition-colors">
+            <i class="fab fa-linkedin-in"></i>
+          </a>
+          <a href="#" class="text-blue-200 hover:text-white transition-colors">
+            <i class="fab fa-instagram"></i>
+          </a>
+        </div>
+      </div>
+      <div>
+        <h4 class="text-xl font-semibold mb-6">קישורים מהירים</h4>
+        <ul class="space-y-3">
+          <li><a href="#courses" class="text-blue-200 hover:text-white transition-colors">קורסים</a></li>
+          <li><a href="#benefits" class="text-blue-200 hover:text-white transition-colors">יתרונות</a></li>
+          <li><a href="#testimonials" class="text-blue-200 hover:text-white transition-colors">המלצות</a></li>
+          <li><a href="#faq" class="text-blue-200 hover:text-white transition-colors">שאלות נפוצות</a></li>
+        </ul>
+      </div>
+      <div>
+        <h4 class="text-xl font-semibold mb-6">צור קשר</h4>
+        <ul class="space-y-3">
+          <li class="flex items-center">
+            <i class="fas fa-phone text-blue-200 ml-3"></i>
+            <span>03-1234567</span>
+          </li>
+          <li class="flex items-center">
+            <i class="fas fa-envelope text-blue-200 ml-3"></i>
+            <span>info@ai-college.co.il</span>
+          </li>
+          <li class="flex items-center">
+            <i class="fas fa-map-marker-alt text-blue-200 ml-3"></i>
+            <span>רחוב הברזל 3, תל אביב</span>
+          </li>
+        </ul>
+      </div>
+      <div>
+        <h4 class="text-xl font-semibold mb-6">הרשמה לעדכונים</h4>
+        <form class="space-y-4">
+          <input type="email" placeholder="הכנס את כתובת המייל שלך" 
+                 class="w-full p-3 rounded-lg bg-blue-800 text-white placeholder-blue-300 focus:outline-none focus:ring-2 focus:ring-blue-500">
+          <button type="submit" class="btn-primary w-full">
+            <i class="fas fa-paper-plane ml-2"></i>
+            הרשמה
+          </button>
+        </form>
+      </div>
+    </div>
+    <div class="border-t border-blue-800 mt-12 pt-8 text-center">
+      <p class="text-blue-200">© 2025 מכללת AI | כל הזכויות שמורות</p>
     </div>
   </div>
 </footer>
