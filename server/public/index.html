@@ -9,56 +9,104 @@
 </head>
 <body>
     <header>
-        <img src="ai_logo.png" alt="לוגו מכללת AI" class="logo">
-        <nav>
-            <a href="#about">אודות</a>
-            <a href="#courses">קורסים</a>
-            <a href="#contact">צור קשר</a>
-        </nav>
+        <div class="header-content">
+            <img src="ai_logo.png" alt="לוגו מכללת AI" class="logo">
+            <nav>
+                <a href="#courses">הקורסים שלנו</a>
+                <a href="#benefits">למה אצלנו?</a>
+                <a href="#register">להרשמה</a>
+            </nav>
+        </div>
     </header>
     <main>
         <section class="hero">
-            <h1>ברוכים הבאים למכללת AI</h1>
-            <p>העתיד שלך בעולם הבינה המלאכותית מתחיל כאן!</p>
-            <a href="#signup" class="cta-btn">להרשמה</a>
+            <div class="hero-content">
+                <h1>הקורס שישנה את הקריירה שלך</h1>
+                <p>הצטרף למאות בוגרים שכבר עובדים בהייטק! קורסים מעשיים, ליווי אישי, תעודה רשמית.</p>
+                <a href="#register" class="cta-btn">להתחלת הרשמה</a>
+            </div>
         </section>
-        <section id="about">
-            <h2>למה ללמוד אצלנו?</h2>
-            <ul>
-                <li>מרצים מובילים מהתעשייה</li>
-                <li>תכנים מעשיים ועדכניים</li>
-                <li>תמיכה אישית וליווי קריירה</li>
-            </ul>
-        </section>
-        <section id="courses">
+        <section id="courses" class="courses-section">
             <h2>הקורסים שלנו</h2>
             <div class="courses-list">
                 <div class="course-card">
                     <h3>יסודות בינה מלאכותית</h3>
                     <p>היכרות עם עולם ה-AI, אלגוריתמים בסיסיים ויישומים.</p>
+                    <button class="info-btn">למידע נוסף</button>
                 </div>
                 <div class="course-card">
                     <h3>פיתוח עם Python ל-AI</h3>
                     <p>כלים מעשיים, פרויקטים וכניסה לעולם התכנות החכם.</p>
+                    <button class="info-btn">למידע נוסף</button>
                 </div>
                 <div class="course-card">
                     <h3>למידת מכונה מתקדמת</h3>
                     <p>מודלים מתקדמים, Deep Learning ופרויקטים אמיתיים.</p>
+                    <button class="info-btn">למידע נוסף</button>
                 </div>
             </div>
         </section>
-        <section id="signup" class="signup-section">
+        <section id="benefits" class="benefits-section">
+            <h2>למה לבחור בנו?</h2>
+            <div class="benefits-list">
+                <div class="benefit">
+                    <span class="benefit-icon">🎓</span>
+                    <h4>מרצים מהתעשייה</h4>
+                    <p>לומדים ממי שעובד בפועל בחברות המובילות.</p>
+                </div>
+                <div class="benefit">
+                    <span class="benefit-icon">💼</span>
+                    <h4>ליווי קריירה</h4>
+                    <p>הכוונה אישית עד למציאת עבודה.</p>
+                </div>
+                <div class="benefit">
+                    <span class="benefit-icon">🖥️</span>
+                    <h4>תכנים מעשיים</h4>
+                    <p>פרויקטים אמיתיים, תרגול מעשי, תיק עבודות.</p>
+                </div>
+                <div class="benefit">
+                    <span class="benefit-icon">⭐</span>
+                    <h4>המלצות בוגרים</h4>
+                    <p>מאות בוגרים מרוצים שכבר עובדים בהייטק.</p>
+                </div>
+            </div>
+        </section>
+        <section id="register" class="register-section">
             <h2>להצטרפות והשארת פרטים</h2>
-            <form>
-                <input type="text" placeholder="שם מלא" required>
-                <input type="email" placeholder="אימייל" required>
-                <input type="tel" placeholder="טלפון" required>
-                <button type="submit">שלח</button>
-            </form>
+            <div class="forms-container">
+                <form id="register-form" class="form-card">
+                    <h3>הרשמה</h3>
+                    <input type="text" name="name" placeholder="שם מלא" required>
+                    <input type="email" name="email" placeholder="אימייל" required>
+                    <input type="password" name="password" placeholder="סיסמה" required>
+                    <button type="submit">הרשמה</button>
+                    <div class="form-message" id="register-message"></div>
+                </form>
+                <form id="login-form" class="form-card">
+                    <h3>התחברות</h3>
+                    <input type="email" name="email" placeholder="אימייל" required>
+                    <input type="password" name="password" placeholder="סיסמה" required>
+                    <button type="submit">התחבר</button>
+                    <div class="form-message" id="login-message"></div>
+                </form>
+            </div>
+        </section>
+        <section id="user-area" class="user-area" style="display:none">
+            <h2>שלום, <span id="user-name"></span>!</h2>
+            <button id="logout-btn">התנתקות</button>
+            <div id="user-courses"></div>
         </section>
     </main>
     <footer>
-        <p>כל הזכויות שמורות &copy; מכללת AI 2024</p>
+        <div class="footer-content">
+            <div>כל הזכויות שמורות &copy; מכללת AI 2024</div>
+            <div class="social-links">
+                <a href="#" title="פייסבוק">🔗</a>
+                <a href="#" title="אינסטגרם">📸</a>
+                <a href="#" title="וואטסאפ">💬</a>
+            </div>
+        </div>
     </footer>
+    <script src="main.js"></script>
 </body>
 </html> 
