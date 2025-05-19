@@ -10,11 +10,21 @@ const logoutBtn = document.getElementById('logout-btn');
 
 const API = '/api';
 
+// --- ולידציה לסיסמה חזקה ---
+function isStrongPassword(password) {
+    return password.length >= 8 &&
+        /[A-Z]/.test(password) &&
+        /[a-z]/.test(password) &&
+        /[0-9]/.test(password) &&
+        /[^A-Za-z0-9]/.test(password);
+}
+
 function showUserArea(user) {
     userArea.style.display = 'block';
     userNameSpan.textContent = user.email || user.name || '';
     registerForm.style.display = 'none';
     loginForm.style.display = 'none';
+    showUserMenu(user);
     // טען קורסים של המשתמש
     fetch(`${API}/courses`, {
         headers: { 'Authorization': 'Bearer ' + localStorage.getItem('token') }
@@ -37,12 +47,59 @@ function hideUserArea() {
     registerForm.style.display = '';
     loginForm.style.display = '';
     userCoursesDiv.innerHTML = '';
+    hideUserMenu();
 }
+
+// --- תפריט משתמש (dropdown) ---
+const userMenu = document.getElementById('user-menu');
+const userMenuBtn = document.getElementById('user-menu-btn');
+const userMenuName = document.getElementById('user-menu-name');
+const userDropdown = document.getElementById('user-dropdown');
+const myCoursesLink = document.getElementById('my-courses-link');
+const logoutLink = document.getElementById('logout-link');
+
+function showUserMenu(user) {
+    userMenu.style.display = 'flex';
+    userMenuName.textContent = user.email || user.name || '';
+}
+function hideUserMenu() {
+    userMenu.style.display = 'none';
+    userMenuName.textContent = '';
+}
+userMenuBtn && userMenuBtn.addEventListener('click', function(e) {
+    e.stopPropagation();
+    userDropdown.style.display = userDropdown.style.display === 'block' ? 'none' : 'block';
+    userMenuBtn.classList.toggle('active');
+});
+document.addEventListener('click', function(e) {
+    if (userDropdown && userDropdown.style.display === 'block') {
+        userDropdown.style.display = 'none';
+        userMenuBtn.classList.remove('active');
+    }
+});
+myCoursesLink && myCoursesLink.addEventListener('click', function(e) {
+    e.preventDefault();
+    userArea.scrollIntoView({behavior: 'smooth'});
+    userDropdown.style.display = 'none';
+    userMenuBtn.classList.remove('active');
+});
+logoutLink && logoutLink.addEventListener('click', function(e) {
+    e.preventDefault();
+    localStorage.removeItem('token');
+    localStorage.removeItem('user');
+    hideUserArea();
+    hideUserMenu();
+});
 
 registerForm.addEventListener('submit', function(e) {
     e.preventDefault();
     registerMsg.textContent = '';
     const data = Object.fromEntries(new FormData(registerForm));
+    if (!isStrongPassword(data.password)) {
+        registerMsg.style.color = '#e11d48';
+        registerMsg.textContent = 'הסיסמה חייבת להיות לפחות 8 תווים, לכלול אות גדולה, אות קטנה, מספר ותו מיוחד.';
+        return;
+    }
     fetch(`${API}/auth/register`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
