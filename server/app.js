@@ -4,6 +4,7 @@ const mongoose = require('mongoose');
 const cors = require('cors');
 const authRoutes = require('./routes/auth');
 const courseRoutes = require('./routes/courses');
+const path = require('path');
 
 const app = express();
 app.use(cors());
@@ -20,9 +21,12 @@ mongoose.connection.on('connected', () => {
   console.log('MongoDB מחובר בהצלחה');
 });
 
-// ראוט בסיסי לבדיקה
-app.get('/', (req, res) => {
-  res.send('ברוך הבא לשרת מכללת AI!');
+// הגשת קבצים סטטיים מהתיקיה public
+app.use(express.static(path.join(__dirname, 'public')));
+
+// כל ראוט שאינו API מחזיר את index.html (לפרונטנד)
+app.get(/^\/(?!api).*/, (req, res) => {
+  res.sendFile(path.join(__dirname, 'public', 'index.html'));
 });
 
 // TODO: להוסיף ראוטים להרשמה, התחברות, קורסים, הרשאות

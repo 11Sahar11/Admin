@@ -71,6 +71,178 @@
       setTimeout(() => { msg.remove(); }, 5000);
       form.reset();
     }
+
+    // מניעת רענון דף לכל כפתור a עם href="#"
+    document.addEventListener('DOMContentLoaded', function() {
+      document.querySelectorAll('a[href="#"]').forEach(function(a) {
+        a.addEventListener('click', function(e) { e.preventDefault(); });
+      });
+      // בדיקת כפתור קנה עכשיו
+      document.querySelectorAll('button.btn-primary').forEach(function(btn) {
+        btn.addEventListener('click', function() {
+          // אם לא מחובר – פותח מודל התחברות
+          if (!localStorage.getItem('currentUser')) {
+            openAuthModal();
+            return;
+          }
+          // כאן אפשר להוסיף לוגיקת רכישה אמיתית
+          alert('הכפתור מגיב! (רכישה תתבצע רק למשתמשים מחוברים)');
+        });
+      });
+      showUserArea();
+    });
+
+    // מערכת הרשמה והתחברות דמו
+    function openAuthModal() {
+      document.getElementById('auth-modal').classList.remove('hidden');
+      showLogin();
+    }
+    function closeAuthModal() {
+      document.getElementById('auth-modal').classList.add('hidden');
+    }
+    function showLogin() {
+      document.getElementById('login-form').classList.remove('hidden');
+      document.getElementById('signup-form').classList.add('hidden');
+      document.getElementById('tab-login').classList.add('border-blue-600','text-blue-600');
+      document.getElementById('tab-signup').classList.remove('border-blue-600','text-blue-600');
+    }
+    function showSignup() {
+      document.getElementById('login-form').classList.add('hidden');
+      document.getElementById('signup-form').classList.remove('hidden');
+      document.getElementById('tab-login').classList.remove('border-blue-600','text-blue-600');
+      document.getElementById('tab-signup').classList.add('border-blue-600','text-blue-600');
+    }
+    function signupUser(e) {
+      e.preventDefault();
+      const email = document.getElementById('signup-email').value.trim();
+      const password = document.getElementById('signup-password').value;
+      if (password.length < 6) {
+        showSignupError('הסיסמה חייבת להכיל לפחות 6 תווים');
+        return;
+      }
+      let users = JSON.parse(localStorage.getItem('users') || '{}');
+      if (users[email]) {
+        showSignupError('משתמש כבר קיים');
+        return;
+      }
+      users[email] = { password, courses: [] };
+      localStorage.setItem('users', JSON.stringify(users));
+      localStorage.setItem('currentUser', email);
+      closeAuthModal();
+      showUserArea();
+    }
+    function loginUser(e) {
+      e.preventDefault();
+      const email = document.getElementById('login-email').value.trim();
+      const password = document.getElementById('login-password').value;
+      let users = JSON.parse(localStorage.getItem('users') || '{}');
+      if (!users[email] || users[email].password !== password) {
+        showLoginError('אימייל או סיסמה שגויים');
+        return;
+      }
+      localStorage.setItem('currentUser', email);
+      closeAuthModal();
+      showUserArea();
+    }
+    function showSignupError(msg) {
+      const el = document.getElementById('signup-error');
+      el.innerText = msg;
+      el.classList.remove('hidden');
+    }
+    function showLoginError(msg) {
+      const el = document.getElementById('login-error');
+      el.innerText = msg;
+      el.classList.remove('hidden');
+    }
+    function showUserArea() {
+      const email = localStorage.getItem('currentUser');
+      if (email) {
+        document.getElementById('user-area').classList.remove('hidden');
+        document.getElementById('user-email').innerText = email;
+        // הסתרת כפתורי רכישה למי שלא מחובר
+        document.querySelectorAll('.btn-primary').forEach(btn => {
+          btn.disabled = false;
+          btn.classList.remove('opacity-50','pointer-events-none');
+        });
+        // הצגת כפתור ניהול לאדמין
+        let users = JSON.parse(localStorage.getItem('users') || '{}');
+        if (users[email] && users[email].isAdmin) {
+          if (!document.getElementById('admin-btn')) {
+            const adminBtn = document.createElement('button');
+            adminBtn.id = 'admin-btn';
+            adminBtn.className = 'btn-secondary px-4 py-1';
+            adminBtn.innerText = 'ניהול קורסים';
+            adminBtn.onclick = openAdminModal;
+            document.getElementById('user-area').appendChild(adminBtn);
+          }
+        } else {
+          const btn = document.getElementById('admin-btn');
+          if (btn) btn.remove();
+        }
+      } else {
+        document.getElementById('user-area').classList.add('hidden');
+        document.getElementById('user-email').innerText = '';
+        document.querySelectorAll('.btn-primary').forEach(btn => {
+          btn.disabled = true;
+          btn.classList.add('opacity-50','pointer-events-none');
+        });
+        const btn = document.getElementById('admin-btn');
+        if (btn) btn.remove();
+      }
+    }
+    function logoutUser() {
+      localStorage.removeItem('currentUser');
+      showUserArea();
+    }
+    // דשבורד אישי
+    function showDashboard() {
+      const email = localStorage.getItem('currentUser');
+      if (!email) return;
+      let users = JSON.parse(localStorage.getItem('users') || '{}');
+      let user = users[email];
+      const ul = document.getElementById('user-courses');
+      ul.innerHTML = '';
+      if (user.courses && user.courses.length > 0) {
+        user.courses.forEach(course => {
+          const li = document.createElement('li');
+          li.innerHTML = `<span class='font-bold text-blue-700'>${course}</span> <a href='#' class='btn-secondary px-3 py-1 ml-2'>הורד קורס</a>`;
+          ul.appendChild(li);
+        });
+      } else {
+        ul.innerHTML = '<li>לא רכשת קורסים עדיין.</li>';
+      }
+      document.getElementById('dashboard-modal').classList.remove('hidden');
+    }
+    function closeDashboard() {
+      document.getElementById('dashboard-modal').classList.add('hidden');
+    }
+    // הוספת משתמש אדמין קבוע אם לא קיים
+    (function(){
+      let users = JSON.parse(localStorage.getItem('users') || '{}');
+      if (!users['sahar.levy123@gmail.com']) {
+        users['sahar.levy123@gmail.com'] = { password: '$S2a2h2a2r2', courses: [], isAdmin: true };
+        localStorage.setItem('users', JSON.stringify(users));
+      } else {
+        users['sahar.levy123@gmail.com'].isAdmin = true;
+        localStorage.setItem('users', JSON.stringify(users));
+      }
+    })();
+    // מודל ניהול קורסים
+    function openAdminModal() {
+      document.getElementById('admin-modal').classList.remove('hidden');
+    }
+    function closeAdminModal() {
+      document.getElementById('admin-modal').classList.add('hidden');
+    }
+    function addCourse(event) {
+      event.preventDefault();
+      const name = document.getElementById('admin-course-name').value.trim();
+      const price = document.getElementById('admin-course-price').value.trim();
+      if (!name || !price) return;
+      // כאן אפשר להרחיב לשמירה ב-localStorage או שליחה לשרת
+      alert('קורס חדש נוסף (דמו): ' + name + ' | מחיר: ' + price);
+      closeAdminModal();
+    }
   </script>
   <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
@@ -285,6 +457,7 @@
         <a href="#testimonials" onclick="smoothScroll('#testimonials')" class="nav-link text-blue-600 hover:text-blue-800 font-medium">המלצות</a>
         <a href="#contact" onclick="smoothScroll('#contact')" class="nav-link text-blue-600 hover:text-blue-800 font-medium">צור קשר</a>
         <a href="#courses" onclick="smoothScroll('#courses')" class="btn-cta ml-4">להתחלת הרשמה</a>
+        <button onclick="openAuthModal()" class="btn-secondary ml-4">התחברות / הרשמה</button>
       </div>
       <div class="md:hidden">
         <button onclick="toggleMobileMenu()" class="text-blue-600 hover:text-blue-800 focus:outline-none">
@@ -748,6 +921,66 @@
     </div>
   </div>
 </section>
+
+<!-- מודל הרשמה/התחברות -->
+<div id="auth-modal" class="fixed inset-0 bg-black bg-opacity-40 flex items-center justify-center z-50 hidden">
+  <div class="bg-white rounded-xl shadow-lg p-8 w-full max-w-md relative animate-fade-in">
+    <button onclick="closeAuthModal()" class="absolute top-3 left-3 text-blue-600 text-2xl font-bold">&times;</button>
+    <div id="auth-tabs" class="flex mb-6">
+      <button id="tab-login" class="flex-1 py-2 font-bold border-b-2 border-blue-600 text-blue-600" onclick="showLogin()">התחברות</button>
+      <button id="tab-signup" class="flex-1 py-2 font-bold border-b-2 border-transparent text-gray-500" onclick="showSignup()">הרשמה</button>
+    </div>
+    <form id="login-form" class="space-y-4" onsubmit="loginUser(event)">
+      <label class="block text-gray-700 font-medium">אימייל</label>
+      <input type="email" id="login-email" class="form-input" required>
+      <label class="block text-gray-700 font-medium">סיסמה</label>
+      <input type="password" id="login-password" class="form-input" required>
+      <button type="submit" class="btn-cta w-full">התחבר</button>
+      <p class="text-sm text-center mt-2">אין לך חשבון? <a href="#" onclick="showSignup();return false;" class="text-blue-600 underline">להרשמה</a></p>
+      <div id="login-error" class="text-red-600 text-center text-sm mt-2 hidden"></div>
+    </form>
+    <form id="signup-form" class="space-y-4 hidden" onsubmit="signupUser(event)">
+      <label class="block text-gray-700 font-medium">אימייל</label>
+      <input type="email" id="signup-email" class="form-input" required>
+      <label class="block text-gray-700 font-medium">סיסמה</label>
+      <input type="password" id="signup-password" class="form-input" required minlength="6">
+      <button type="submit" class="btn-cta w-full">הרשם</button>
+      <p class="text-sm text-center mt-2">כבר יש לך חשבון? <a href="#" onclick="showLogin();return false;" class="text-blue-600 underline">להתחברות</a></p>
+      <div id="signup-error" class="text-red-600 text-center text-sm mt-2 hidden"></div>
+    </form>
+  </div>
+</div>
+<!-- אזור אישי -->
+<div id="user-area" class="fixed top-4 left-4 bg-white rounded-xl shadow-lg px-6 py-3 flex items-center gap-4 z-40 hidden animate-fade-in">
+  <span id="user-email" class="font-bold text-blue-700"></span>
+  <button onclick="logoutUser()" class="btn-secondary px-4 py-1">התנתק</button>
+  <a href="#dashboard" onclick="showDashboard();return false;" class="btn-cta px-4 py-1">אזור אישי</a>
+</div>
+<!-- דשבורד אישי -->
+<div id="dashboard-modal" class="fixed inset-0 bg-black bg-opacity-40 flex items-center justify-center z-50 hidden">
+  <div class="bg-white rounded-xl shadow-lg p-8 w-full max-w-lg relative animate-fade-in">
+    <button onclick="closeDashboard()" class="absolute top-3 left-3 text-blue-600 text-2xl font-bold">&times;</button>
+    <h2 class="text-2xl font-bold mb-4 text-blue-800">האזור האישי שלי</h2>
+    <p class="mb-4">ברוך הבא! כאן תוכל לצפות ולהוריד את הקורסים שרכשת.</p>
+    <ul id="user-courses" class="space-y-3">
+      <!-- כאן יופיעו קורסים -->
+    </ul>
+  </div>
+</div>
+<!-- מודל ניהול קורסים -->
+<div id="admin-modal" class="fixed inset-0 bg-black bg-opacity-40 flex items-center justify-center z-50 hidden">
+  <div class="bg-white rounded-xl shadow-lg p-8 w-full max-w-md relative animate-fade-in">
+    <button onclick="closeAdminModal()" class="absolute top-3 left-3 text-blue-600 text-2xl font-bold">&times;</button>
+    <h2 class="text-2xl font-bold mb-4 text-blue-800">הוספת קורס חדש</h2>
+    <form onsubmit="addCourse(event)" class="space-y-4">
+      <label class="block text-gray-700 font-medium">שם הקורס</label>
+      <input type="text" id="admin-course-name" class="form-input" required>
+      <label class="block text-gray-700 font-medium">מחיר</label>
+      <input type="number" id="admin-course-price" class="form-input" required>
+      <button type="submit" class="btn-cta w-full">הוסף קורס</button>
+    </form>
+  </div>
+</div>
 
 </body>
 </html>
