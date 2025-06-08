@@ -29,7 +29,8 @@ router.post('/login', async (req, res) => {
     const match = await bcrypt.compare(password, user.password);
     if (!match) return res.status(400).json({ message: 'אימייל או סיסמה שגויים' });
     const token = jwt.sign({ id: user._id, email: user.email, isAdmin: user.isAdmin }, process.env.JWT_SECRET || 'devsecret', { expiresIn: '7d' });
-    res.json({ token, user: { email: user.email, isAdmin: user.isAdmin } });
+    // include user's courses so frontend can display them after login
+    res.json({ token, user: { email: user.email, isAdmin: user.isAdmin, courses: user.courses } });
   } catch (err) {
     res.status(500).json({ message: 'שגיאת שרת' });
   }
